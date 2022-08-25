@@ -8,11 +8,11 @@ import ImageCardCommunity from "./ImageCard";
 import { useDispatch, useSelector } from "react-redux";
 import config from "../../../../../ApiConfig/Config";
 
-const unsplash = createApi({
-  accessKey: "Qy5FzE7XDnvR2rmmWz3v5wk06KoXw-DAbvNvaR6oVmw",
-  // apiUrl: 'https://api.unsplash.com',
-});
+
 const SearchPhotos = ({ refresh, setRefresh }) => {
+  const { state } = useSelector((state) => state.vvgnli);
+
+
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const [pics, setPics] = useState([]);
@@ -37,7 +37,9 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
   const getApprovedPhotos = async () => {
     setLoading(true);
     const res = await axios.get(
-      config.server.path + config.api.getApprovedPhotos,
+      config.server.path + config.api.getApprovedPhotos,{
+        headers:{state:state}
+      }
     );
     console.log(res.data.approvedPhotosArray)
     dispatch({type:"approvedPhotos",payload:res.data.approvedPhotosArray});
