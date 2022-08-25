@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { gData } from "../../App";
 
 import AppBar from "@mui/material/AppBar";
@@ -17,6 +17,9 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
 
 import "./portalsMenu.css";
+import { FormControl, InputLabel } from "@mui/material";
+import { Select } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 
 const settings = [
   {
@@ -36,10 +39,12 @@ const settings = [
 const PortalsMenu = () => {
   let myData = useContext(gData);
   const navigate = useNavigate();
+  const disptach = useDispatch()
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [disableTillLogin, setDisableTillLogin] = React.useState(true);
+  const [state, setState] = useState("");
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -67,6 +72,11 @@ const PortalsMenu = () => {
 
   const user = JSON.parse(sessionStorage.getItem("user"));
 
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setState(e.target.value);
+    disptach({type:'state',payload:state})
+  };
   // useEffect(()=>{
 
   //   if(user){
@@ -76,6 +86,7 @@ const PortalsMenu = () => {
 
   // )
   console.log(user);
+
   return (
     <>
       <AppBar position="static">
@@ -228,6 +239,23 @@ const PortalsMenu = () => {
               >
                 Research Work
               </Button>
+              <FormControl variant="filled" sx={{ width: "100px" }}>
+                <InputLabel id="demo-simple-select-label">State</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={state}
+                  label="State"
+                  onChange={(e) => {
+                    handleChange(e);
+                  }}
+                >
+                  <MenuItem value={"vvgnli"}>vvgnli</MenuItem>
+                  <MenuItem value={"Gujurat"}>Gujurat</MenuItem>
+                  <MenuItem value={"kerela"}>Kerela</MenuItem>
+                  <MenuItem value={"Odisha"}>Odisha</MenuItem>
+                </Select>
+              </FormControl>
             </Box>
             {console.log(myData.state)}
 
