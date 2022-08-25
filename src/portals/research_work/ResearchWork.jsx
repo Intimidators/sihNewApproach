@@ -11,21 +11,20 @@ import { toast } from "react-toastify";
 import { Document, Page } from "react-pdf";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const ResearchWork = () => {
   const toastId = useRef(null);
+  const dispatch = useDispatch();
   const [url, setUrl] = useState();
   // "https://test-ptab-docs-fe-assignment.s3.amazonaws.com/169020134"
   const [refresh, setRefresh] = useState(false);
   const [pdfFile, setPdfFile] = useState(null);
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+  const { state } = useSelector((state) => state.vvgnli);
+  const { approvedResearchWork } = useSelector((state) => state.research);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
   const researchPdfs = [];
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
 
   const [loading, setLoading] = useState(true);
   const [pdfList, setPdfList] = useState([]);
@@ -68,7 +67,7 @@ const ResearchWork = () => {
               });
             }
           },
-          headers: { "User-Id": user.userId },
+          headers: { "User-Id": user.userId, state: state },
         }
       );
 
@@ -88,7 +87,7 @@ const ResearchWork = () => {
           userId: user.userId,
           mediaIdArray: res.data.mediaIdArray,
         },
-        { headers: { "User-Id": user.userId } }
+        { headers: { "User-Id": user.userId, state: state } }
       );
       // console.log("res2", res2);
       setRefresh(true);
@@ -104,20 +103,32 @@ const ResearchWork = () => {
 
   useEffect(() => {
     const getApprovedResearchWork = async () => {
-      setLoading(true);
-      const res = await axios.get(
-        config.server.path + config.api.getApprovedResearchWork
-      );
-      console.log(res.data.approvedResearchWork);
-      researchPdfs.push(...res.data.approvedResearchWork);
-      console.log(researchPdfs);
-      setPdfList(res.data.approvedResearchWork);
-      setRefresh(false);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          config.server.path + config.api.getApprovedResearchWork,
+          {
+            headers: { state: state },
+          }
+        );
+        dispatch({
+          type: "approvedResearchWork",
+          payload: res.data.getApprovedResearchWork,
+        });
+        console.log(res.data.approvedResearchWork);
+        researchPdfs.push(...res.data.approvedResearchWork);
+        console.log(researchPdfs);
+        setPdfList(res.data.approvedResearchWork);
+        setRefresh(false);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
     };
 
     getApprovedResearchWork();
-  }, [refresh]);
+  }, []);
   const navigate = useNavigate();
   const notify = (msg) => {
     toast.error(
@@ -172,33 +183,34 @@ const ResearchWork = () => {
                 </div>
               ) : (
                 <ul style={{ overflow: "scroll" }}>
-                  {pdfList.map((data, key) => (
-                    // return (
-                    <li
-                      key={data.mediaId}
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        height: "100px",
-                        justifyContent: "space-around",
-                      }}
-                    >
-                      {console.log("data", data)}
-                      <Button
+                  {approvedResearchWork &&
+                    approvedResearchWork.map((data, key) => (
+                      // return (
+                      <li
+                        key={data.mediaId}
                         style={{
-                          color: "#1976d2",
-                          backgroundColor: "white",
-                          fontWeight: "700",
-                          cursor: "pointer",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          height: "100px",
+                          justifyContent: "space-around",
                         }}
-                        onClick={() => setUrl(data.mediaURL)}
                       >
-                        {`Document ${key + 1}`}
-                      </Button>
-                    </li>
-                    // );
-                  ))}
+                        {console.log("data", data)}
+                        <Button
+                          style={{
+                            color: "#1976d2",
+                            backgroundColor: "white",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setUrl(data.mediaURL)}
+                        >
+                          {`Document ${key + 1}`}
+                        </Button>
+                      </li>
+                      // );
+                    ))}
                 </ul>
               )}
               <div>
