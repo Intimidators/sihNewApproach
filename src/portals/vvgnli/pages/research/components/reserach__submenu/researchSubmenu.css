@@ -1,0 +1,40 @@
+.research__submenu{
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+}
+
+.research__submenu__container{
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 3px black;
+    padding-bottom: 1rem;
+}
+
+.research__submenu__container ul{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: fit-content;
+    justify-content: center;
+}
+
+.research__submenu__container ul li{
+    margin-left: 1rem;
+    margin-top: .5rem;
+    padding: 0 .5rem;
+    width: fit-content;
+    background: white;
+    box-shadow: 2px 2px 3px;
+    transition: all 0.5s;
+    font-weight: 500;
+    border-radius: 60px 45px 30px 15px/15px 30px 45px 60px;
+}
+
+.research__submenu__container ul li:hover{
+    cursor: pointer;
+    transform: scale(1.05);
+    background: #69d1f1;
+}

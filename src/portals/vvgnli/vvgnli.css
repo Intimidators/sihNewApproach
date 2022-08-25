@@ -1,0 +1,10 @@
+.vvgnli{
+    height: 87vh;
+    /* border: 2px solid red; */
+    padding-top: 2.2rem;
+}
+
+.vvgnli__container{
+    display: flex;
+    /* border: 2px solid red; */
+}

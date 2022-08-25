@@ -1,0 +1,12 @@
+.dashboard__webinar{
+    margin-top: 50px;
+    width: 100%;
+}
+.dashboard__webinar__list{
+    padding-bottom: 10px;
+}
+.dashboard__webinar__container{
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 10px;
+}

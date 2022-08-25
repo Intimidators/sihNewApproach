@@ -1,0 +1,41 @@
+.scroll-table1 {
+    overflow-x: auto;
+    padding-bottom: 0px;
+    margin-bottom: 22px;
+}
+
+table {
+    float: left;
+    width: 100%;
+    border: 1px solid #1A2E47;
+}
+
+.views-view-grid tbody {
+    border-top: none;
+}
+
+tr, td {
+    border: 1px solid #1A2E47;
+    padding: 5px;
+}
+
+/* tr:nth-of-type(odd) {
+    background: #f8f8f8;
+} */
+
+.aboutRightContainer a {
+    color: #027ac6;
+}
+
+.infrastructure__paragraphs__container{
+    margin-bottom: 1rem;
+    margin-top: .5rem;
+}
+
+.infrastructure__subheading__container{
+    margin-top: 1rem;
+}
+
+.infrastructure__moreInfo__container p{
+    margin-top: .5rem;
+}

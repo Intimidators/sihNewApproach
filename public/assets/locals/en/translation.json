@@ -1,0 +1,15 @@
+{
+  "Log_in_main_heading": "Sign in",
+
+  "Log_in_Button": "Log in english",
+  "Log_in_page_admin_type": "Admin",
+  "Log_in_page_regular_type" :"Reguar",
+  "Log_in_Remember_me":"Remember me",
+  "Log_in_Role":"Role",
+  "Log_in_Do_not_have_accnt":"Do not have an account",
+  "Log_in_Enter_password":"Enter Password",
+  "Log_in_Enter_email":"Enter Email",
+
+
+  "Create_Account_Button": "Sign in english"
+}

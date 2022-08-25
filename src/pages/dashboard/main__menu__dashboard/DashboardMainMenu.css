@@ -1,0 +1,51 @@
+.dashboard__main__menu{
+    height: 85vh;
+    width: 15vw;
+    /* background-color: #1760de; */
+    /* background-color: #3521c0; */
+    background-color: rgb(64, 64, 64);
+    /* background-image: linear-gradient(to left, #69d1f1 , white); */
+    /* border: 2px solid red; */
+}
+
+.dashboard__main__menu__container{
+    margin: .5rem 1rem;
+    display: flex;
+    height: 95%;
+}
+
+.dashboard__main__menu__container ul{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.dashboard__main__menu__container ul li{
+    
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 60px 45px 30px 15px/15px 30px 45px 60px;
+    background: #fff;
+    box-shadow: 4px 4px 3px;
+    transition: all 0.5s;
+    font-weight: 600
+}
+
+.dashboard__main__menu__container ul:hover li{
+    filter: blur(2px);
+}
+
+.dashboard__main__menu__container ul li:hover{
+    transform: scale(1.1);
+    opacity: 1;
+    filter: blur(0);
+    cursor: pointer;
+}
+
+
+.css-d9ml5t-MuiDrawer-docked .MuiDrawer-paper{
+    height: 300px !important;
+}

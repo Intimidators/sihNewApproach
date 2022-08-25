@@ -1,0 +1,45 @@
+.main__content__about__us{
+    width: 100%;
+    height: 100%;
+    padding: .5rem; 
+    /* background-image: linear-gradient(to top, #69d1f1 , transparent); */
+}
+
+
+.main__content__about__us__container{
+    width: 100%;
+    height: 100%;
+}
+
+.main__content__about__us__container .about__us h1{
+    margin-bottom: .3rem;
+}
+
+.main__content__about__us__container .about__us .line{
+    margin-bottom: 1rem;
+    font-weight: 900;
+    height: 4px;
+    background-color: black;
+    box-shadow: 2px 2px 3px ;
+}
+
+.main__content__about__us__container .about__us p{
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+}
+
+.light__line{
+    margin-bottom: 2rem;
+}
+
+.aims__and__objectives h3{
+    margin-bottom: .5rem;
+}
+
+.aims__and__objectives ul{
+    margin-left: 2rem;
+}
+
+.aims__and__objectives ul li{
+    list-style-type: disc;
+}

@@ -1,0 +1,28 @@
+.video__posts{
+    width: 100%;
+    height: 100%;
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+
+
+    display: grid;
+    place-items: center;
+}
+
+
+.video__posts__container{
+    width: 100%;
+    height: 100%;
+    /* border: 2px solid green; */
+    border-radius: 1rem;
+    box-shadow: 4px 4px 3px ;
+
+    position: relative;
+
+    overflow: scroll;
+    scroll-snap-type: y mandatory;
+}

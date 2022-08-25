@@ -1,0 +1,14 @@
+.uploaded__images__card__container{
+    width: 100% !important;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.uploaded__images__card{
+    padding: 0 !important;
+    margin: 1rem !important;
+
+}

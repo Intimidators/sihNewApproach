@@ -1,0 +1,8 @@
+.vision__and__mission__mission__container__para ul{
+    list-style: circle;
+    margin-top: .5rem;
+    margin-left: 1rem;
+}
+.vision__and__mission__mission__container__para ul li{
+    list-style: disc;
+}

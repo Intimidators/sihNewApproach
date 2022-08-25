@@ -1,0 +1,35 @@
+.theme__language__switcher {
+  width: 100%;
+  height: 5vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+}
+
+.theme__language__switcher__container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.font__sizes,
+.languages {
+  color: white;
+}
+
+.languages {
+  /* width: 13vw; */
+  /* display: flex;
+  justify-content: space-between; */
+}
+
+.theme__change {
+  background: white;
+  color: black;
+  height: 20px;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

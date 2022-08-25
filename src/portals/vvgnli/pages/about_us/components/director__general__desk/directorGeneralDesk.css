@@ -1,0 +1,34 @@
+.director__general__desk {
+  /* border: 2px solid red; */
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+}
+
+.director__general__desk__container {
+  /* border: 2px solid green; */
+  width: 100%;
+  height: 100%;
+}
+
+.director__general__desk__heading__container {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.director__general__desk__heading__container h1 {
+  padding-bottom: 0.5rem;
+}
+
+.director__general__desk__para {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.director__general__desk__sign__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 1rem;
+}
