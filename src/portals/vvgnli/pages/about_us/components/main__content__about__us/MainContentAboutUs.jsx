@@ -9,7 +9,7 @@ const MainContentAboutUs = () => {
       <div className="main__content__about__us">
         <div className="main__content__about__us__container">
           <section className="about__us">
-            <h1>About Us</h1>
+            <h1>About Us VVGNLI</h1>
             <hr className="line" />
             <p>
               V.V. Giri National Labour Institute (VVGNLI), an autonomous body of the Ministry of Labour and Employment, Government of India, set up in July 1974, is a premier Institute of Labour Research, Training and Education. Since its inception, the Institute has endeavoured through research, training and publications to reach all those who are concerned with various aspects of labour, both in the organised and unorganised sectors. The focus of such endeavours has been the transfer of academic insight and understanding related to all the aspects of labour for application to policy formulation, legislation and action to ensure a just and proper place for labour in an egalitarian and democratic society.

@@ -181,14 +181,14 @@ export default function VvgnliMainMenu() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const langList = ["vvgnli", "Gujrat", "kerela", "Odisha"];
+  const langList = ["vvgnli", "gujrat", "kerala", "odisha"];
   const disptach = useDispatch();
   return (
     <>
       <div
         style={{
           height: "fit-content",
-          position: "fixed",
+          // position: "fixed",
           backgroundColor: "black",
           display: "flex",
           justifyContent: "flex-end",
