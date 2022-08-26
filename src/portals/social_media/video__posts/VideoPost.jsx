@@ -5,15 +5,21 @@ import "./videoPost.css";
 import Videos from "./videoPostComponent/Videos";
 import config from "../../../ApiConfig/Config";
 import axios from "axios";
+import {useSelector} from 'react-redux'
 
 const VideoPost = () => {
   // const [ytVideo, setYtVideo] = useState([]);
   const [approvedVideos, setApprovedVideos] = useState([]);
+  const { state } = useSelector((state) => state.vvgnli);
+
 
   const getAllApprovedVideos = async () => {
     try {
       const res = await axios.get(
         config.server.path + config.api.getApprovedVideos,
+        {
+          headers:{state:state}
+        }
       );
       setApprovedVideos(res.data.approvedVideosArray);
       console.log(res);
@@ -23,17 +29,6 @@ const VideoPost = () => {
   };
 
   useEffect(() => {
-    // async function fetchVideos() {
-    //   const response = await axios
-    //     .get("https://ytshorts-clone.herokuapp.com/api/video/posts")
-    //     .then((res) => res.data)
-    //     .catch((err) => console.log(err));
-    //   //console.log(response);
-
-    //   setYtVideo(response);
-    //   return response;
-    // }
-    // fetchVideos();
     getAllApprovedVideos();
   }, []);
 

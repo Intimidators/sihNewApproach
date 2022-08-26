@@ -6,7 +6,7 @@ import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-
+import moment from "moment";
 const PastWebinarCard = ({ webinar }) => {
   return (
     <div className="webinar__card">
@@ -23,10 +23,10 @@ const PastWebinarCard = ({ webinar }) => {
           <div className="webinar__card__webinar_info">
             <CardContent sx={{ p: 0, "&:last-child": { pb: 0 } }}>
               <Typography gutterBottom variant="p" component="div">
-                Name : {webinar.name} <br />
+                Name : {webinar.topic} <br />
                 Dept : {webinar.department}
                 <br />
-                When : {webinar.date}
+                When : {moment(webinar.startTime).format('dddd DD MMMM yyyy hh:mm:ss A')}
                 <br />
                 Host : {webinar.host}
               </Typography>

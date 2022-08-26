@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import axios from "axios";
 import config from "../../ApiConfig/Config";
 import { toast } from "react-toastify";
-import { Document, Page } from "react-pdf";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
