@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import "./portalsMenu.css";
 import { FormControl, InputLabel } from "@mui/material";
@@ -46,6 +46,9 @@ const PortalsMenu = () => {
   const [disableTillLogin, setDisableTillLogin] = React.useState(true);
   // const [state, setState] = useState("");
   const { state } = useSelector((state) => state.vvgnli);
+
+  const location = useLocation();
+  console.log(location.pathname);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -209,7 +212,23 @@ const PortalsMenu = () => {
                   navigate("/vvgnli");
                   console.log("vvgnli");
                 }}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={
+                  location.pathname === "/vvgnli"
+                    ? {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontWeight: "bold",
+                        backgroundColor: "white",
+                        color: "#1976d2",
+                      }
+                    : {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                      }
+                }
+                variant={location.pathname === "/vvgnli" ? "contained" : ""}
               >
                 VVGNLI
               </Button>
@@ -219,7 +238,23 @@ const PortalsMenu = () => {
                   navigate("community");
                   console.log("community");
                 }}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={
+                  location.pathname === "/community"
+                    ? {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontWeight: "bold",
+                        backgroundColor: "white",
+                        color: "#1976d2",
+                      }
+                    : {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                      }
+                }
+                variant={location.pathname === "/community" ? "contained" : ""}
               >
                 Community
               </Button>
@@ -229,7 +264,23 @@ const PortalsMenu = () => {
                   navigate("webinar");
                   console.log("webinar");
                 }}
-                sx={{ my: 2, color: "white", display: "block" }}
+                variant={location.pathname === "/webinar" ? "contained" : ""}
+                sx={
+                  location.pathname === "/webinar"
+                    ? {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontWeight: "bold",
+                        backgroundColor: "white",
+                        color: "#1976d2",
+                      }
+                    : {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                      }
+                }
               >
                 Webinar
               </Button>
@@ -239,7 +290,25 @@ const PortalsMenu = () => {
                   navigate("research-section");
                   console.log("research-section");
                 }}
-                sx={{ my: 2, color: "white", display: "block" }}
+                variant={
+                  location.pathname === "/research-section" ? "contained" : ""
+                }
+                sx={
+                  location.pathname === "/research-section"
+                    ? {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                        fontWeight: "bold",
+                        backgroundColor: "white",
+                        color: "#1976d2",
+                      }
+                    : {
+                        my: 2,
+                        color: "white",
+                        display: "block",
+                      }
+                }
               >
                 Research Work
               </Button>
