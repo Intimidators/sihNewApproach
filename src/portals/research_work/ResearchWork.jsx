@@ -11,6 +11,10 @@ import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import CommentIcon from "@mui/icons-material/Comment";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
 const ResearchWork = () => {
   const toastId = useRef(null);
@@ -23,7 +27,6 @@ const ResearchWork = () => {
   const { approvedResearchWork } = useSelector((state) => state.research);
 
   const user = JSON.parse(sessionStorage.getItem("user"));
-  const researchPdfs = [];
 
   const [loading, setLoading] = useState(true);
   const [pdfList, setPdfList] = useState([]);
@@ -92,7 +95,8 @@ const ResearchWork = () => {
       setRefresh(true);
     } catch (error) {
       console.log(error);
-      toast.error();
+      toast.error(error.response.data.message);
+      setLoading(false);
     }
 
     console.log("upload function done");
@@ -110,24 +114,28 @@ const ResearchWork = () => {
             headers: { state: state },
           }
         );
-        dispatch({
-          type: "approvedResearchWork",
-          payload: res.data.getApprovedResearchWork,
-        });
+        // dispatch({
+        //   type: "approvedResearchWork",
+        //   payload: res.data.getApprovedResearchWork,
+        // });
+        // console.log(res.data.approvedResearchWork);
+        // researchPdfs.push(...res.data.approvedResearchWork);
+        // console.log(researchPdfs);
+        // setPdfList(res.data.approvedResearchWork);
         console.log(res.data.approvedResearchWork);
-        researchPdfs.push(...res.data.approvedResearchWork);
-        console.log(researchPdfs);
         setPdfList(res.data.approvedResearchWork);
         setRefresh(false);
         setLoading(false);
       } catch (error) {
         console.log(error);
+        toast.error(error.response.data.message);
         setLoading(false);
       }
     };
 
     getApprovedResearchWork();
-  }, []);
+    getLikedMediaArray();
+  }, [refresh, state]);
   const navigate = useNavigate();
   const notify = (msg) => {
     toast.error(
@@ -147,6 +155,63 @@ const ResearchWork = () => {
         toastId: "id",
       }
     );
+  };
+  const [likedPosts, setLikedPosts] = useState([]);
+
+  const handleClickLike = async (mediaId) => {
+    try {
+      const res = await axios.post(
+        config.server.path + config.api.like,
+        {
+          mediaId: mediaId,
+          likeStatus: "1",
+          userId: user.userId,
+        },
+        {
+          headers: { "User-Id": user.userId, state: state },
+        }
+      );
+      setRefresh(true);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getLikedMediaArray = async () => {
+    try {
+      const res = await axios.get(
+        config.server.path +
+          config.api.getLikedPosts +
+          `?userId=${user.userId}`,
+        {
+          headers: { state: state, "User-Id": user.userId },
+        }
+      );
+      console.log(res);
+      setLikedPosts(res.data.likedPostsArray);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleClickDislike = async (mediaId) => {
+    try {
+      const res = await axios.post(
+        config.server.path + config.api.like,
+        {
+          mediaId: mediaId,
+          likeStatus: "2",
+          userId: user.userId,
+        },
+        {
+          headers: { "User-Id": user.userId, state: state },
+        }
+      );
+      setRefresh(false);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -182,34 +247,41 @@ const ResearchWork = () => {
                 </div>
               ) : (
                 <ul style={{ overflow: "scroll" }}>
-                  {approvedResearchWork &&
-                    approvedResearchWork.map((data, key) => (
-                      // return (
-                      <li
-                        key={data.mediaId}
+                  {pdfList?.map((data, key) => (
+                    <li
+                      key={data.mediaId}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        height: "100px",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      {console.log("data", data)}
+                      <Button
+                        style={{
+                          color: "#1976d2",
+                          backgroundColor: "white",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setUrl(data.mediaURL)}
+                      >
+                        {`Document ${key + 1}`}
+                      </Button>
+                      <div
                         style={{
                           display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          height: "100px",
-                          justifyContent: "space-around",
+                          justifyContent: "space-evenly",
+                          width: "100%",
                         }}
                       >
-                        {console.log("data", data)}
-                        <Button
-                          style={{
-                            color: "#1976d2",
-                            backgroundColor: "white",
-                            fontWeight: "700",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => setUrl(data.mediaURL)}
-                        >
-                          {`Document ${key + 1}`}
-                        </Button>
-                      </li>
-                      // );
-                    ))}
+                        <ThumbUpOffAltIcon />
+                        <CommentIcon />
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               )}
               <div>

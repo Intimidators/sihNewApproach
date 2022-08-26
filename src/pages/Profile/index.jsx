@@ -17,6 +17,7 @@ import config from "../../ApiConfig/Config";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   const toastId = useRef(null);
@@ -62,6 +63,7 @@ const ProfilePage = () => {
   });
 
   const [imgFile, setImgFile] = useState("");
+  const { state } = useSelector((state) => state.vvgnli);
 
   const [loading, setLoading] = useState(false);
   const onSubmit = async (data) => {
@@ -102,7 +104,11 @@ const ProfilePage = () => {
             mediaId: res.data.mediaIdArray[0],
           },
           {
-            headers: { "User-Id": user.userId },
+            headers: {
+              "User-Id": user.userId,
+
+              state:state
+            },
           }
         );
 
@@ -118,7 +124,10 @@ const ProfilePage = () => {
             userName: data.userName,
           },
           {
-            headers: { "User-Id": user.userId },
+            headers: {
+              "User-Id": user.userId,
+              state: state,
+            },
           }
         );
         console.log(res);

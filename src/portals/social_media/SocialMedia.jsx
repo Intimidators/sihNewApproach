@@ -48,6 +48,7 @@ const SocialMedia = () => {
         }
       );
       console.log(res);
+
       toast.done(toastId.current);
       toast.update(toastId.current, {
         render: "Upload Done",
@@ -64,14 +65,21 @@ const SocialMedia = () => {
           headers: { "User-Id": user.userId, state: state },
         }
       );
-
+      if (user.role === 2) {
+        
+        toast.success("Media has been send for approval");
+      }
+      if (user.role === 1) {
+        toast.success("Media has been uploaded")
+      }
       setRefresh(() => {
         console.log("refresh true");
         return true;
       });
       const approvedRes = await axios.get(
-        config.server.path + config.api.getApprovedPhotos,{
-          headers:{state:state}
+        config.server.path + config.api.getApprovedPhotos,
+        {
+          headers: { state: state },
         }
       );
       dispatch({
@@ -80,6 +88,7 @@ const SocialMedia = () => {
       });
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
     setImgFile(null);
     toastId.current = null;
