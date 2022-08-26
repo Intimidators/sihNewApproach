@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import config from "../../../../../../../ApiConfig/Config";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -57,7 +57,7 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
       obj = {
         userId: user.userId,
         userRole: "1",
-      }
+      };
     } else {
       obj = {
         userId: user.userId,
@@ -72,8 +72,6 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
         `?userId=${userId}`,
       {
         ...obj,
-      },{
-        headers:{state:state}
       }
     );
     console.log(res);
@@ -94,8 +92,12 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
           checked={user.userRole === 1}
         /> */}
 
-        {user.userRole === 2 && <Button onClick={()=>handleChangeRole(true)}>Make Admin</Button>}
-        {user.userRole === 1 && <Button onClick={()=>handleChangeRole(false)}>Make Regular</Button>}
+        {user.userRole === 2 && (
+          <Button onClick={() => handleChangeRole(true)}>Make Admin</Button>
+        )}
+        {user.userRole === 1 && (
+          <Button onClick={() => handleChangeRole(false)}>Make Regular</Button>
+        )}
       </StyledTableCell>
       <StyledTableCell align="left">
         <div>
