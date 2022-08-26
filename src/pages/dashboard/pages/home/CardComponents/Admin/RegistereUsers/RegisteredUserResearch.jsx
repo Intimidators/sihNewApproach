@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import config from "../../../../../../../ApiConfig/Config";
 import moment from "moment";
 import AppWidgetSummary from "../../../AppWidgetSummary";
+import {useSelector} from 'react-redux'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,6 +34,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const RegisteredUserUploadedResearch = () => {
+  const {state}=useSelector((state)=>state.vvgnli)
   const [researchWorks, setResearchWorks] = useState([]);
   const { userId } = useParams();
   const [regularTotalPhotosCount, setRegularTotalPhotosCount] = useState(0);
@@ -44,7 +46,10 @@ const RegisteredUserUploadedResearch = () => {
     const res = await axios.get(
       config.server.path +
         config.api.getResearchWorkForUserId +
-        `?userId=${userId}`
+        `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
     console.log(res.data);
     setRegularTotalPhotosCount(
