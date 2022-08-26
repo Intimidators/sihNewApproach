@@ -246,7 +246,7 @@ const PortalsMenu = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  width: "100px",
+                  width: "130px",
                   height: "100%",
                   alignSelf: "center",
                   backgroundColor: "white",

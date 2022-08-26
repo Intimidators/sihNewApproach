@@ -49,12 +49,9 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
 
   useEffect(() => {
     getApprovedPhotos();
-    console.log("use effect re", refresh);
   }, [state]);
 
-  // console.log(loading);
-  console.log(refresh);
-
+  
   return (
     <div className="searchPhotos">
       {/* <ImageModal show={show} handleClose={hideModal}>
