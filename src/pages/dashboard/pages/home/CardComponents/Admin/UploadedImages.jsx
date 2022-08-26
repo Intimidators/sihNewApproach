@@ -8,14 +8,18 @@ import axios from "axios";
 import AppWidgetSummary from "../../AppWidgetSummary";
 import config from "../../../../../../ApiConfig/Config";
 import './uploadedImages.css'
+import {useSelector} from "react-redux"
 
 
 const UploadedImages = () => {
   const [photos, setPhotos] = useState([]);
+  const {state}=useSelector((state)=>state.vvgnli)
 
   const getApprovedPhotos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getApprovedPhotos
+      config.server.path + config.api.getApprovedPhotos,{
+        headers:{state:state}
+      }
     );
     setPhotos(res.data.approvedPhotosArray);
     console.log(res);

@@ -34,7 +34,7 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
   const navigate = useNavigate();
 
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
-  const {state} =useSelector((state)=>state.vvgnli)
+  const { state } = useSelector((state) => state.vvgnli);
   const userId = userRoleFromSession.userId;
 
   const handleClick = (event) => {
@@ -62,7 +62,7 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
       obj = {
         userId: user.userId,
         userRole: "2",
-      }
+      };
     }
 
     const res = await axios.patch(
@@ -72,12 +72,16 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
         `?userId=${userId}`,
       {
         ...obj,
+      },
+      {
+        headers: { state: state },
       }
     );
     console.log(res);
     getAllUsersBasicInfo();
   };
 
+  
   return (
     <StyledTableRow key={user.userId}>
       <StyledTableCell align="left">{user.userId}</StyledTableCell>
@@ -127,7 +131,6 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
             }}
           >
             <MenuItem onClick={handleClickMoreInfo}>More Info</MenuItem>
-            <MenuItem onClick={handleClose}>Delete</MenuItem>
           </Menu>
         </div>
       </StyledTableCell>
