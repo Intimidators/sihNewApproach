@@ -6,9 +6,13 @@ import config from "../../../../../../../ApiConfig/Config";
 import "../Imagecard.css";
 import axios from "axios";
 import { Button } from "antd";
+import {useSelector} from 'react-redux'
+
 import moment from "moment";
 const RegisteredVideoCard = ({ post, setVideos }) => {
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+
   const userId = userRoleFromSession.userId;
   const handleDeletePost = async () => {
     try {
@@ -19,7 +23,7 @@ const RegisteredVideoCard = ({ post, setVideos }) => {
           `?userId=${userId}`,
         {
           mediaId: post.mediaId,
-        }
+        },{ headers: { state: state } }
       );
       await setVideos();
       console.log(res);

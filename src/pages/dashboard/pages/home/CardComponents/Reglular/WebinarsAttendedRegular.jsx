@@ -10,4 +10,7 @@ const WebinarsAttendedRegular = () => {
   )
 }
 
+
+
+
 export default WebinarsAttendedRegular

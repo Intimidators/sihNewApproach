@@ -26,7 +26,10 @@ const PastWebinarCard = ({ webinar }) => {
                 Name : {webinar.topic} <br />
                 Dept : {webinar.department}
                 <br />
-                When : {moment(webinar.startTime).format('dddd DD MMMM yyyy hh:mm:ss A')}
+                When :{" "}
+                {moment(webinar.startTime).format(
+                  "dddd DD MMMM yyyy hh:mm:ss A"
+                )}
                 <br />
                 Host : {webinar.host}
               </Typography>
@@ -40,7 +43,7 @@ const PastWebinarCard = ({ webinar }) => {
                   color="primary"
                   startIcon={<YouTubeIcon />}
                 >
-                  View Recorded Event
+                  <a href={webinar.recordingUrl} target="_blank">View Recorded Event</a>
                 </Button>
               </div>
             </CardActions>
