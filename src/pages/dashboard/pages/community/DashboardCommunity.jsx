@@ -17,6 +17,8 @@ import { styled } from "@mui/material/styles";
 import moment from "moment";
 import { tableCellClasses } from "@mui/material/TableCell";
 import axios from "axios";
+import {useSelector} from 'react-redux'
+
 import config from "../../../../ApiConfig/Config";
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -160,6 +162,8 @@ const RESEARCHLIST = [
 const DashboardCommunityVideos = ({ isAdmin }) => {
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+
   const userId = userRoleFromSession.userId;
   console.log(userRoleFromSession.role);
   if (userRoleFromSession.role === 1) {
@@ -174,7 +178,7 @@ const DashboardCommunityVideos = ({ isAdmin }) => {
   const getPendingVideos = async () => {
     try {
       const res = await axios.get(
-        config.server.path + config.api.getPendingVideos + `?userId=${userId}`
+        config.server.path + config.api.getPendingVideos + `?userId=${userId}`,{ headers: { state: state } }
       );
       setPendingVideos(res.data.pendingVideos);
       console.log("Videos", res);
@@ -194,7 +198,8 @@ const DashboardCommunityVideos = ({ isAdmin }) => {
         config.server.path + config.api.updatePostStatus + `?userId=${userId}`,
         {
           ...obj,
-        }
+        },
+        { headers: { state: state } }
       );
       getPendingVideos();
     } catch (error) {
@@ -212,7 +217,8 @@ const DashboardCommunityVideos = ({ isAdmin }) => {
       config.server.path + config.api.updatePostStatus + `?userId=${userId}`,
       {
         ...obj,
-      }
+      },
+      { headers: { state: state } }
     );
     getPendingVideos();
   };

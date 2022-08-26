@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -198,8 +198,10 @@ const DashboardWebinar = ({ isAdmin }) => {
   const [departmentName, setdepartment] = useState("");
   const [meetingTopic, setMeetingTopic] = useState("");
   const [host, setHost] = useState("");
-  const [date, setDate] = useState("")
+  const [date, setDate] = useState("");
   const { state } = useSelector((state) => state.vvgnli);
+  const [loading, setLoading] = useState(false);
+  const [futureWebinars, setFutureWebinars] = useState([]);
 
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
@@ -218,7 +220,7 @@ const DashboardWebinar = ({ isAdmin }) => {
 
   const handleDateChange = (date, datestring) => {
     console.log(date, datestring);
-    setDate(datestring)
+    setDate(datestring);
   };
   const handleCreateWebinar = () => {
     setIsModalVisible(false);
@@ -228,7 +230,7 @@ const DashboardWebinar = ({ isAdmin }) => {
       config.server.path + config.role.admin + config.api.createNewWebinar,
       {
         agenda: agenda,
-        startTime: moment(date).format('yyyy-MM-DDThh:mm:ss[Z]'),
+        startTime: moment(date).format("yyyy-MM-DDThh:mm:ss[Z]"),
         adminUserId: userId,
         duration: duration,
         departmentName: departmentName,
@@ -244,6 +246,27 @@ const DashboardWebinar = ({ isAdmin }) => {
   const showModal = () => {
     setIsModalVisible(true);
   };
+
+  const getWebinarDetails = async () => {
+    try {
+      setLoading(true);
+      const futureWebinar = await axios.get(
+        config.server.path + config.role.admin + config.api.getFutureWebinars,
+        {
+          headers: { "User-Id": userId, state: state },
+        }
+      );
+      setFutureWebinars(futureWebinar.data.webinars);
+      setLoading(false);
+      console.log(futureWebinar);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getWebinarDetails();
+  }, []);
 
   return (
     <div className="dashboard__research">
@@ -280,39 +303,44 @@ const DashboardWebinar = ({ isAdmin }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {WEBINARLIST.map((row, id) => (
-                  <StyledTableRow key={id}>
-                    <StyledTableCell component="th" scope="row">
-                      {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.department}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">{row.date}</StyledTableCell>
-                    <StyledTableCell align="left">{row.host}</StyledTableCell>
-                    <StyledTableCell align="left">
-                      <a href={row.webinarLink}>Webinar Link</a>
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.status ? "Scheduled" : "Completed"}
-                    </StyledTableCell>
-                    {isAdmin && (
+                {futureWebinars &&
+                  futureWebinars.map((row, id) => (
+                    <StyledTableRow key={id}>
+                      <StyledTableCell component="th" scope="row">
+                        {row.topic}
+                      </StyledTableCell>
                       <StyledTableCell align="left">
-                        <a href={row.usersLink}>Users Link</a>
+                        {row.department}
                       </StyledTableCell>
-                    )}
-                    {isAdmin && (
-                      <StyledTableCell align="right">
-                        <Box component="div" sx={{ display: "inline" }}>
-                          <CancelIcon color="action" />
-                        </Box>
-                        <Box component="div" sx={{ display: "inline" }}>
-                          <DoneIcon color="primary" />
-                        </Box>
+                      <StyledTableCell align="left">
+                        {moment(row.startTime).format(
+                          "dddd DD MMMM yyyy hh:mm:ss A"
+                        )}
                       </StyledTableCell>
-                    )}
-                  </StyledTableRow>
-                ))}
+                      <StyledTableCell align="left">{row.host}</StyledTableCell>
+                      <StyledTableCell align="left">
+                        <a href={row.webinarLink}>Webinar Link</a>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.status ? "Scheduled" : "Completed"}
+                      </StyledTableCell>
+                      {isAdmin && (
+                        <StyledTableCell align="left">
+                          <a href={row.usersLink}>Users Link</a>
+                        </StyledTableCell>
+                      )}
+                      {isAdmin && (
+                        <StyledTableCell align="right">
+                          <Box component="div" sx={{ display: "inline" }}>
+                            <CancelIcon color="action" />
+                          </Box>
+                          <Box component="div" sx={{ display: "inline" }}>
+                            <DoneIcon color="primary" />
+                          </Box>
+                        </StyledTableCell>
+                      )}
+                    </StyledTableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>

@@ -17,6 +17,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "./registeredUser.css";
 import config from "../../../../../../../ApiConfig/Config";
 import axios from "axios";
+import {useSelector} from 'react-redux'
 
 import { useNavigate } from "react-router-dom";
 import RegisteredUsersCardTable from "./RegisteredUsersCardTable";
@@ -30,9 +31,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-
-
-
 const RegisterdUsers = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -41,6 +39,7 @@ const RegisterdUsers = () => {
   const [allUsers, setAllUsers] = useState([]);
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
   const userId = userRoleFromSession.userId;
+  const { state } = useSelector((state) => state.vvgnli);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,7 +53,8 @@ const RegisterdUsers = () => {
       config.server.path +
         config.role.admin +
         config.api.getUserDetails +
-        `?userId=${userId}`
+        `?userId=${userId}`,
+      { headers: { state: state } }
     );
     setAllUsers(res.data.userDetails);
     console.log(res.data.userDetails);
@@ -86,7 +86,11 @@ const RegisterdUsers = () => {
             <TableBody>
               {allUsers &&
                 allUsers.map((user) => (
-                  <RegisteredUsersCardTable key={user.userId} user={user} getAllUsersBasicInfo={getAllUsersBasicInfo} />
+                  <RegisteredUsersCardTable
+                    key={user.userId}
+                    user={user}
+                    getAllUsersBasicInfo={getAllUsersBasicInfo}
+                  />
                 ))}
             </TableBody>
           </Table>
