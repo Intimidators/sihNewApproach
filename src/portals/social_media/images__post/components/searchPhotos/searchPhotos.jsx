@@ -41,7 +41,7 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
         headers:{state:state}
       }
     );
-    console.log(res.data.approvedPhotosArray)
+    console.log(res.data.approvedPhotosArray);
     dispatch({type:"approvedPhotos",payload:res.data.approvedPhotosArray});
     setLoading(false);
     setRefresh(false);
@@ -49,12 +49,9 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
 
   useEffect(() => {
     getApprovedPhotos();
-    console.log("use effect re", refresh);
-  }, [refresh]);
+  }, [state]);
 
-  // console.log(loading);
-  console.log(refresh);
-
+  
   return (
     <div className="searchPhotos">
       {/* <ImageModal show={show} handleClose={hideModal}>

@@ -18,7 +18,7 @@ const PresentWebinarCard = ({ webinar }) => {
             <CardMedia
               component="img"
               height="125"
-              image={webinar.imageUrl}
+              image={webinar.coverPhoto}
               alt="Paella dish"
             />
           </div>

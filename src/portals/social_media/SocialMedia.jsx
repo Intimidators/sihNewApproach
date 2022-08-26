@@ -70,7 +70,9 @@ const SocialMedia = () => {
         return true;
       });
       const approvedRes = await axios.get(
-        config.server.path + config.api.getApprovedPhotos
+        config.server.path + config.api.getApprovedPhotos,{
+          headers:{state:state}
+        }
       );
       dispatch({
         type: "approvedPhotos",

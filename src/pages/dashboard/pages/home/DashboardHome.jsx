@@ -7,14 +7,10 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 import config from "../../../../ApiConfig/Config";
 import axios from "axios";
-import { Button, Space, Modal, Input, DatePicker } from "antd";
-
+import { useSelector } from "react-redux";
+import { CircularProgress } from "@material-ui/core";
 // components
 const DashboardHome = ({}) => {
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
   const userId = userRoleFromSession.userId;
@@ -25,7 +21,11 @@ const DashboardHome = ({}) => {
     isAdmin = false;
   }
   console.log(isAdmin);
-
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const { state } = useSelector((state) => state.vvgnli);
+  const [loading, setLoading] = useState(false);
   const [registeredUsersCount, setRegisteredUsersCount] = useState(0);
   const [approvedPhotosCount, setApprovedPhotosCount] = useState(0);
   const [approvedVideosCount, setApprovedVideosCount] = useState(0);
@@ -42,8 +42,12 @@ const DashboardHome = ({}) => {
       config.server.path +
         config.role.admin +
         config.api.getUserDetails +
-        `?count=true&userId=${userId}`
+        `?count=true&userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
+    console.log(res);
     if (res.data.userDetails.length === 0) {
       setRegisteredUsersCount(0);
     } else {
@@ -55,7 +59,10 @@ const DashboardHome = ({}) => {
     const res = await axios.get(
       config.server.path +
         config.api.getCountOfApprovedPhotos +
-        `?userId=${userId}`
+        `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
 
     if (res.data.approvedPhotosCount.length === 0) {
@@ -72,7 +79,10 @@ const DashboardHome = ({}) => {
     const res = await axios.get(
       config.server.path +
         config.api.getCountOfApprovedVideos +
-        `?userId=${userId}`
+        `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
     if (res.data.approvedVideosCount.length === 0) {
       setApprovedVideosCount(0);
@@ -88,7 +98,10 @@ const DashboardHome = ({}) => {
     const res = await axios.get(
       config.server.path +
         config.api.getPendingResearchWork +
-        `?userId=${userId}&count=true`
+        `?userId=${userId}&count=true`,
+      {
+        headers: { state: state },
+      }
     );
 
     // console.log(res.data.pendingResearchWork);
@@ -98,7 +111,10 @@ const DashboardHome = ({}) => {
     const res = await axios.get(
       config.server.path +
         config.api.getApprovedResearchWork +
-        `?userId=${userId}&count=true`
+        `?userId=${userId}&count=true`,
+      {
+        headers: { state: state },
+      }
     );
     if (res.data.approvedResearchWork.length === 0) {
       setApprovedResearchWorkCount(0);
@@ -113,7 +129,10 @@ const DashboardHome = ({}) => {
 
   const getRegularUserPhotosCount = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
     setRegularTotalPhotosCount(
       res.data.countOfApprovedAndPendingMedia.countOfApprovedMedia +
@@ -124,7 +143,10 @@ const DashboardHome = ({}) => {
   };
   const getRegularUserVideosCount = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
     setRegularTotalVideosCount(
       res.data.countOfApprovedAndPendingMedia.countOfApprovedMedia +
@@ -138,7 +160,10 @@ const DashboardHome = ({}) => {
     const res = await axios.get(
       config.server.path +
         config.api.getResearchWorkForUserId +
-        `?userId=${userId}`
+        `?userId=${userId}`,
+      {
+        headers: { state: state },
+      }
     );
     //  setRegularTotalPhotosCount();
     setRegularTotalResearchCount(
@@ -153,7 +178,7 @@ const DashboardHome = ({}) => {
       const future = await axios.get(
         config.server.path + config.role.admin + config.api.getFutureWebinars,
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId, state: state },
         }
       );
       setFutureWebinarCount(future.data.webinars.length);
@@ -161,7 +186,7 @@ const DashboardHome = ({}) => {
       const past = await axios.get(
         config.server.path + config.role.admin + config.api.getPastWebinars,
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId, state: state },
         }
       );
       console.log("past", past);
@@ -169,7 +194,7 @@ const DashboardHome = ({}) => {
       const ongoing = await axios.get(
         config.server.path + config.role.admin + config.api.getOngoingWebinars,
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId, state: state },
         }
       );
       setOnGoingWebinarCount(ongoing.data.webinars.length);
@@ -177,6 +202,7 @@ const DashboardHome = ({}) => {
     } catch (error) {}
   };
   useEffect(() => {
+    setLoading(true);
     if (isAdmin) {
       getRegisteredUsersCount();
       getApprovedPhotosCount();
@@ -184,205 +210,222 @@ const DashboardHome = ({}) => {
       getPendingResearchWorkCount();
       getApprovedResearchWorkCount();
       getWebinarsCount();
+      setLoading(false);
+    } else {
+      getRegularUserPhotosCount();
+      getRegularUserVideosCount();
+      getRegularUserResearchCount();
+      setLoading(false);
     }
-    getRegularUserPhotosCount();
-    getRegularUserVideosCount();
-    getRegularUserResearchCount();
-  }, []);
+  }, [state]);
 
   return (
     <div className="dashboard__home">
-      <div className="dashboard__home__container">
-        {isAdmin && (
-          <div className="dashboard__home__container__admin">
-            <div className="dashboard__home--heading">
-              {/* <Typography variant="h4" sx={{ mb: 5 }}> */}
-              <h1>Hi, Welcome Admin</h1>
-              {/* </Typography> */}
-            </div>
-            <div className="dashboard__home__card__container">
-              <div className="dashboard__home__card__list">
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Registered users"
-                      total={registeredUsersCount}
-                      icon={"ant-design:UserAddOutLined"}
-                      onClick={() => navigate("/dashboard/home/registerdUsers")}
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div className="dashboard__home__container">
+          {isAdmin && (
+            <div className="dashboard__home__container__admin">
+              <div className="dashboard__home--heading">
+                {/* <Typography variant="h4" sx={{ mb: 5 }}> */}
+                <h1>Hi, Welcome Admin</h1>
+                {/* </Typography> */}
+              </div>
+              <div className="dashboard__home__card__container">
+                <div className="dashboard__home__card__list">
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Registered users"
+                        total={registeredUsersCount}
+                        icon={"ant-design:UserAddOutLined"}
+                        onClick={() =>
+                          navigate("/dashboard/home/registerdUsers")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Images Uploaded"
-                      total={approvedPhotosCount}
-                      color="info"
-                      icon={"ant-design:user-filled"}
-                      onClick={() => navigate("/dashboard/home/uploadedImages")}
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Images Uploaded"
+                        total={approvedPhotosCount}
+                        color="info"
+                        icon={"ant-design:user-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedImages")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="videos uploaded"
-                      total={approvedVideosCount}
-                      color="warning"
-                      icon={"ant-design:video-filled"}
-                      onClick={() => navigate("/dashboard/home/uploadedVideos")}
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="videos uploaded"
+                        total={approvedVideosCount}
+                        color="warning"
+                        icon={"ant-design:video-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedVideos")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Research Work Uploaded"
-                      total={approvedResearchWorkCount}
-                      color="error"
-                      icon={"ant-design:bug-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/uploadedResearch")
-                      }
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Research Work Uploaded"
+                        total={approvedResearchWorkCount}
+                        color="error"
+                        icon={"ant-design:bug-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedResearch")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Past Webinars"
-                      total={pastWebinarCount}
-                      icon={"ant-design:android-filled"}
-                      onClick={() => navigate("/dashboard/home/webinarTillNow")}
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Past Webinars"
+                        total={pastWebinarCount}
+                        icon={"ant-design:android-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/webinarTillNow")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Active Webinar"
-                      total={onGoingWebinarCount}
-                      color="info"
-                      icon={"ant-design:apple-filled"}
-                      onClick={() => navigate("/dashboard/home/activeWebinars")}
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Active Webinar"
+                        total={onGoingWebinarCount}
+                        color="info"
+                        icon={"ant-design:apple-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/activeWebinars")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="dashboard__card wrapper">
-                  <div className="card">
-                    <AppWidgetSummary
-                      title="Scheduled Webinars"
-                      total={futureWebinarCount}
-                      color="warning"
-                      icon={"ant-design:windows-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/scheduledWebinars")
-                      }
-                      className="dashboard__card__inner__div"
-                      style={{ cursor: "pointer", fontSize: ".5rem" }}
-                    />
+                  <div className="dashboard__card wrapper">
+                    <div className="card">
+                      <AppWidgetSummary
+                        title="Scheduled Webinars"
+                        total={futureWebinarCount}
+                        color="warning"
+                        icon={"ant-design:windows-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/scheduledWebinars")
+                        }
+                        className="dashboard__card__inner__div"
+                        style={{ cursor: "pointer", fontSize: ".5rem" }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {!isAdmin && (
-          <div className="dashboard__home__container__regular">
-            <div className="dashboard__home--heading">
-              <Typography variant="h4" sx={{ mb: 5 }}>
-                Hi, Welcome Regular
-              </Typography>
-            </div>
-            <div className="dashboard__home__card__container">
-              <div className="dashboard__home__card__list">
-                <Grid container spacing={8}>
-                  <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                      title="Images Uploaded"
-                      total={regularTotalPhotosCount}
-                      icon={"ant-design:UserAddOutLined"}
-                      onClick={() =>
-                        navigate("/dashboard/home/uploadedImagesRegular")
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Grid>
+          {!isAdmin && (
+            <div className="dashboard__home__container__regular">
+              <div className="dashboard__home--heading">
+                <Typography variant="h4" sx={{ mb: 5 }}>
+                  Hi, Welcome Regular
+                </Typography>
+              </div>
+              <div className="dashboard__home__card__container">
+                <div className="dashboard__home__card__list">
+                  <Grid container spacing={8}>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <AppWidgetSummary
+                        title="Images Uploaded"
+                        total={regularTotalPhotosCount}
+                        icon={"ant-design:UserAddOutLined"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedImagesRegular")
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
 
-                  <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                      title="Videos Uploaded"
-                      total={regularTotalVideosCount}
-                      color="info"
-                      icon={"ant-design:user-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/uploadedVideosRegular")
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                      title="Research Work Uploaded"
-                      total={regularTotalResearchCount}
-                      color="error"
-                      icon={"ant-design:bug-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/uploadedResearchRegular")
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                      title="Registerd Webinar"
-                      total={1352831}
-                      color="info"
-                      icon={"ant-design:apple-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/registeredWebinarsRegular")
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
-                  </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <AppWidgetSummary
+                        title="Videos Uploaded"
+                        total={regularTotalVideosCount}
+                        color="info"
+                        icon={"ant-design:user-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedVideosRegular")
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <AppWidgetSummary
+                        title="Research Work Uploaded"
+                        total={regularTotalResearchCount}
+                        color="error"
+                        icon={"ant-design:bug-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/uploadedResearchRegular")
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                      <AppWidgetSummary
+                        title="Registerd Webinar"
+                        total={1352831}
+                        color="info"
+                        icon={"ant-design:apple-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/registeredWebinarsRegular")
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
 
-                  <Grid item xs={12} sm={6} md={3}>
-                    <AppWidgetSummary
-                      title="Webinars Attended"
-                      total={1723315}
-                      color="warning"
-                      icon={"ant-design:windows-filled"}
-                      onClick={() =>
-                        navigate("/dashboard/home/webinarsAttendedRegular")
-                      }
-                      style={{ cursor: "pointer" }}
-                    />
+                    <Grid item xs={12} sm={6} md={3}>
+                      <AppWidgetSummary
+                        title="Webinars Attended"
+                        total={1723315}
+                        color="warning"
+                        icon={"ant-design:windows-filled"}
+                        onClick={() =>
+                          navigate("/dashboard/home/webinarsAttendedRegular")
+                        }
+                        style={{ cursor: "pointer" }}
+                      />
+                    </Grid>
                   </Grid>
-                </Grid>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

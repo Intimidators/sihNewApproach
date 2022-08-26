@@ -79,7 +79,6 @@ const PortalsMenu = () => {
   const handleChange = (e) => {
     console.log(e.target.value);
     // setState(e.target.value);
-    debugger;
     disptach({ type: "state", payload: e.target.value });
   };
   // useEffect(()=>{
@@ -316,7 +315,7 @@ const PortalsMenu = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  width: "100px",
+                  width: "130px",
                   height: "100%",
                   alignSelf: "center",
                   backgroundColor: "white",
@@ -333,10 +332,11 @@ const PortalsMenu = () => {
                   }}
                   sx={{ color: "white" }}
                 >
-                  <MenuItem value={"vvgnli"}>vvgnli</MenuItem>
-                  <MenuItem value={"Gujurat"}>Gujurat</MenuItem>
-                  <MenuItem value={"kerela"}>Kerela</MenuItem>
-                  <MenuItem value={"Odisha"}>Odisha</MenuItem>
+                  <MenuItem value={"vvgnli"}>Vvgnli</MenuItem>
+                  <MenuItem value={"gujarat"}>Gujarat</MenuItem>
+                  <MenuItem value={"kerala"}>Kerala</MenuItem>
+                  <MenuItem value={"odisha"}>Odisha</MenuItem>
+                  <MenuItem value={"jharkhand"}>Jharkhand</MenuItem>
                 </Select>
               </FormControl>
             </Box>

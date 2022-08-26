@@ -3,20 +3,21 @@ import PresentWebinarCard from "../WebinarCard/PresentWebinarCard";
 import FutureWebinarCard from "../WebinarCard/FutureWebinarCard";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import {useSelector} from 'react-redux';
+import { useSelector } from "react-redux";
 import "./HomePage.css";
 import react, { useState, useEffect } from "react";
 import axios from "axios";
 import config from "../../../../ApiConfig/Config";
+import { CircularProgress } from "@material-ui/core";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const userFromSession = JSON.parse(sessionStorage.getItem("user"));
-  const {state}=useSelector((state)=>state.vvgnli)
+  const { state } = useSelector((state) => state.vvgnli);
   if (userFromSession) {
     var userId = userFromSession.userId;
   }
-
+  const [loading, setLoading] = useState(false);
   const [pastWebinars, setPastWebinars] = useState([]);
   const [onGoingWebinars, setOnGoingWebinars] = useState([]);
   const [futureWebinars, setFutureWebinars] = useState([]);
@@ -142,10 +143,11 @@ const HomePage = () => {
 
   const getWebinarDetails = async () => {
     try {
+      setLoading(true);
       const pastWebinar = await axios.get(
         config.server.path + config.role.admin + config.api.getPastWebinars,
         {
-          headers: { "User-Id": userId,state:state },
+          headers: { "User-Id": userId, state: state },
         }
       );
       setPastWebinars(pastWebinar.data.webinars);
@@ -153,7 +155,7 @@ const HomePage = () => {
       const onGoingWebinar = await axios.get(
         config.server.path + config.role.admin + config.api.getOngoingWebinars,
         {
-          headers: { "User-Id": userId,state:state },
+          headers: { "User-Id": userId, state: state },
         }
       );
       console.log(onGoingWebinar);
@@ -161,70 +163,76 @@ const HomePage = () => {
       const futureWebinar = await axios.get(
         config.server.path + config.role.admin + config.api.getFutureWebinars,
         {
-          headers: { "User-Id": userId, state:state},
+          headers: { "User-Id": userId, state: state },
         }
       );
       setFutureWebinars(futureWebinar.data.webinars);
-
+      setLoading(false);
       console.log(futureWebinar);
-    } catch (error) {}
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getWebinarDetails();
-  }, []);
+  }, [state]);
 
   return (
     <div className="webinar__home__page">
-      <div className="webinar__home__page__container">
-        <div className="webinar__sections">
-          <div className="past__webinars webinar__section">
-            <div className="past__webinars--heading webinar__section--heading">
-              <h4>Past Webinars</h4>
-            </div>
-            <div className="webinars__list">
-              {pastWebinars &&
-                pastWebinars.map((webinar, index) => (
-                  <PastWebinarCard key={index} webinar={webinar} />
-                ))}
-              {/* <div className="past__webinars__list--footer webinars__list--footer">
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div className="webinar__home__page__container">
+          <div className="webinar__sections">
+            <div className="past__webinars webinar__section">
+              <div className="past__webinars--heading webinar__section--heading">
+                <h4>Past Webinars</h4>
+              </div>
+              <div className="webinars__list">
+                {pastWebinars &&
+                  pastWebinars.map((webinar, index) => (
+                    <PastWebinarCard key={index} webinar={webinar} />
+                  ))}
+                {/* <div className="past__webinars__list--footer webinars__list--footer">
                 <Button variant="outlined" onClick={handlePastSeeMore}>see more</Button>
               </div> */}
+              </div>
             </div>
-          </div>
 
-          <div className="ongoing__webinars webinar__section">
-            <div className="ongoing__webinars--heading webinar__section--heading">
-              <h4>Live Webinars</h4>
-            </div>
-            <div className="webinars__list">
-              {onGoingWebinars &&
-                onGoingWebinars.map((webinar, index) => (
-                  <PresentWebinarCard key={index} webinar={webinar} />
-                ))}
-              {/* <div className="ongoing__webinars__list--footer webinars__list--footer">
+            <div className="ongoing__webinars webinar__section">
+              <div className="ongoing__webinars--heading webinar__section--heading">
+                <h4>Live Webinars</h4>
+              </div>
+              <div className="webinars__list">
+                {onGoingWebinars &&
+                  onGoingWebinars.map((webinar, index) => (
+                    <PresentWebinarCard key={index} webinar={webinar} />
+                  ))}
+                {/* <div className="ongoing__webinars__list--footer webinars__list--footer">
                 <Button variant="outlined" onClick={handlePresentSeeMore}>see more</Button>
               </div> */}
+              </div>
             </div>
-          </div>
 
-          <div className="future__webinars webinar__section">
-            <div className="future__webinars--heading webinar__section--heading">
-              <h4>Future Webinars</h4>
-            </div>
-            <div className="webinars__list">
-              {futureWebinars &&
-                futureWebinars.map((webinar, index) => (
-                  <FutureWebinarCard key={index} webinar={webinar} />
-                ))}
+            <div className="future__webinars webinar__section">
+              <div className="future__webinars--heading webinar__section--heading">
+                <h4>Future Webinars</h4>
+              </div>
+              <div className="webinars__list">
+                {futureWebinars &&
+                  futureWebinars.map((webinar, index) => (
+                    <FutureWebinarCard key={index} webinar={webinar} />
+                  ))}
 
-              {/* <div className="future__webinars__list--footer webinars__list--footer">
+                {/* <div className="future__webinars__list--footer webinars__list--footer">
                 <Button variant="outlined" onClick={handleFutureSeeMore}>see more</Button>
               </div> */}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

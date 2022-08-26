@@ -18,7 +18,7 @@ const FutureWebinarCard = ({ webinar }) => {
             <CardMedia
               component="img"
               height="125"
-              image={webinar.imageUrl}
+              image={webinar.coverPhoto}
               alt="org image"
             />
           </div>
