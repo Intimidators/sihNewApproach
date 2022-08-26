@@ -92,7 +92,7 @@ const App = () => {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
-              <Route path="/" element={<MainRendering />} />
+              <Route path="" element={<MainRendering />} />
               <Route path="/vvgnli" element={<MainRendering />} />
               <Route path="/community" element={<SocialMedia />} />
               <Route path="/webinar" element={<Webinars />} />

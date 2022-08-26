@@ -20,6 +20,7 @@ import "./portalsMenu.css";
 import { FormControl, InputLabel } from "@mui/material";
 import { Select } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import logo from "./logo1.jpg";
 
 const settings = [
   {
@@ -100,7 +101,6 @@ const PortalsMenu = () => {
               variant="h6"
               noWrap
               component="a"
-              href="/login"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -111,7 +111,7 @@ const PortalsMenu = () => {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              <img src={logo}  alt="logo" onClick={()=>{navigate("")}} />
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -200,7 +200,7 @@ const PortalsMenu = () => {
                 textDecoration: "none",
               }}
             >
-              LOGO
+              <img src={logo} alt="logo" onClick={()=>{console.log("hey") ;navigate("/"); console.log("hey")}}/>
             </Typography>
             <Box
               style={{ justifyContent: "space-evenly" }}
