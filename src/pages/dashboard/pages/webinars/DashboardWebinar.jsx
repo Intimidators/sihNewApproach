@@ -290,7 +290,7 @@ const DashboardWebinar = ({ isAdmin }) => {
 
   useEffect(() => {
     getWebinarDetails();
-  }, []);
+  }, [state]);
 
   return (
     <div className="dashboard__research">
@@ -348,10 +348,10 @@ const DashboardWebinar = ({ isAdmin }) => {
                       </StyledTableCell>
                       <StyledTableCell align="left">{row.host}</StyledTableCell>
                       <StyledTableCell align="left">
-                        <a href={row.startUrl}>Start Webinar Link</a>
+                        <a href={row.startUrl} target="_blank">Start Webinar Link</a>
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        <a href={row.joinUrl}>Webinar Link</a>
+                        <a href={row.joinUrl} target="_blank">Webinar Link</a>
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         {row.status ? "Scheduled" : "Completed"}
@@ -457,13 +457,12 @@ const DashboardWebinar = ({ isAdmin }) => {
             onOk={handleCancelUser}
             onCancel={handleCancelUser}
             style={{
-              height: "90vh",
+              height: "60vh",
               position: "absolute",
-              top: "5vh",
               left: "35%",
             }}
           >
-            <div style={{ marginTop: "90%" }}>
+            <div e={{ marstylginTop: "1%" }}>
               <div className="modal__images__comments">
                 {webinarRegistredUsers &&
                   webinarRegistredUsers.map((comment) => (

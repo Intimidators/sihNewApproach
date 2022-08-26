@@ -28,7 +28,10 @@ const PresentWebinarCard = ({ webinar }) => {
                 Name : {webinar.topic} <br />
                 Dept : {webinar.department}
                 <br />
-                When : {moment(webinar.startTime).format('dddd DD MMMM yyyy hh:mm:ss A')}
+                When :{" "}
+                {moment(webinar.startTime).format(
+                  "dddd DD MMMM yyyy hh:mm:ss A"
+                )}
                 <br />
                 Host : {webinar.host}
               </Typography>
@@ -37,23 +40,15 @@ const PresentWebinarCard = ({ webinar }) => {
           <div className="webinar__card__button__container">
             <CardActions style={{ justifyContent: "center" }}>
               <div className="webinar__viewRecoding__button">
-                {webinar.started ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<GroupsIcon />}
-                  >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<GroupsIcon />}
+                >
+                  <a href={webinar.joinUrl} target="_blank">
                     Join Session Here
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AccessAlarmIcon />}
-                  >
-                    Starts in {18} minutes
-                  </Button>
-                )}
+                  </a>
+                </Button>
               </div>
             </CardActions>
           </div>
