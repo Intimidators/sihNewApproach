@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+import moment from "moment";
 
 const PresentWebinarCard = ({ webinar }) => {
   return (
@@ -24,10 +25,10 @@ const PresentWebinarCard = ({ webinar }) => {
           <div className="webinar__card__webinar_info">
             <CardContent sx={{ p: 0, "&:last-child": { pb: 0 } }}>
               <Typography gutterBottom variant="p" component="div">
-                Name : {webinar.name} <br />
+                Name : {webinar.topic} <br />
                 Dept : {webinar.department}
                 <br />
-                When : {webinar.date}
+                When : {moment(webinar.startTime).format('dddd DD MMMM yyyy hh:mm:ss A')}
                 <br />
                 Host : {webinar.host}
               </Typography>
