@@ -36,11 +36,12 @@ const config = {
     getPastWebinars: "webinars/getPastWebinars",
     updatePassword: "user/update-password",
     handlePostPic: "handleProfilePic",
-    like: "like",
-    comment: "comment",
-    getCommentsOnPost: "getCommentsOnPost",
-    getLikedPost: "getLikedPost",
+    like: "post/like",
+    comment: "post/comment",
+    getCommentsOnPost: "post/getCommentsOnPost",
+    getLikedPost: "post/getLikedPost",
     updateProfile: "updateProfile",
+    createNewWebinar: "webinars/createNewWebinar",
   },
 
   role: {

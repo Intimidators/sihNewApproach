@@ -5,11 +5,14 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import axios from "axios";
 import config from "../../../../../ApiConfig/Config";
-
+import {useSelector} from 'react-redux'
+import moment from 'moment'
 import "./imageCard.css";
 const { Text } = Typography;
 
 const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
+
+  const {state}=useSelector((state)=>state.vvgnli)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState("");
@@ -28,7 +31,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
           config.api.getCommentsOnPost +
           `?mediaId=${image.mediaId}`,
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId ,state:state},
         }
       );
       setComments(res.data.commentsOnPostArray);
@@ -56,7 +59,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
           userId: userId,
         },
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId ,state:state},
         }
       );
       await getApprovedPhotos();
@@ -75,7 +78,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
           userId: userId,
         },
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId ,state:state},
         }
       );
       await getApprovedPhotos();
@@ -95,7 +98,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
           commentData: comment,
         },
         {
-          headers: { "User-Id": userId },
+          headers: { "User-Id": userId,state:state },
         }
       );
       await getApprovedPhotos();
@@ -107,7 +110,9 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
   const getLikedMediaArray = async () => {
     try {
       const res = await axios.get(
-        config.server.path + config.api.getLikedPosts + `?userId=${userId}`
+        config.server.path + config.api.getLikedPosts + `?userId=${userId}`,{
+          headers:{state:state}
+        }
       );
       console.log(res);
       setLikedPosts(res.data.likedPostsArray);
@@ -214,7 +219,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
                   >
                     Name : {comment.fullName}
                     <br />
-                    Date : HardCoded date <br />
+                    Date :{moment(comment.commentTimeStamp).format('dddd DD MMMM yyyy hh:mm:ss A') }<br />
                     Comment: {comment.commentData}
                   </div>
                 ))}

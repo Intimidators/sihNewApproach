@@ -263,10 +263,11 @@ const PortalsMenu = () => {
                   }}
                   sx={{ color: "white" }}
                 >
-                  <MenuItem value={"vvgnli"}>vvgnli</MenuItem>
-                  <MenuItem value={"Gujrat"}>Gujurat</MenuItem>
-                  <MenuItem value={"kerela"}>Kerela</MenuItem>
-                  <MenuItem value={"Odisha"}>Odisha</MenuItem>
+                  <MenuItem value={"vvgnli"}>Vvgnli</MenuItem>
+                  <MenuItem value={"gujarat"}>Gujarat</MenuItem>
+                  <MenuItem value={"kerala"}>Kerala</MenuItem>
+                  <MenuItem value={"odisha"}>Odisha</MenuItem>
+                  <MenuItem value={"jharkhand"}>Jharkhand</MenuItem>
                 </Select>
               </FormControl>
             </Box>

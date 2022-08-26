@@ -41,7 +41,7 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
         headers:{state:state}
       }
     );
-    console.log(res.data.approvedPhotosArray)
+    console.log(res.data.approvedPhotosArray);
     dispatch({type:"approvedPhotos",payload:res.data.approvedPhotosArray});
     setLoading(false);
     setRefresh(false);

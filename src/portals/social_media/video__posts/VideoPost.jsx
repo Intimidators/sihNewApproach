@@ -30,7 +30,7 @@ const VideoPost = () => {
 
   useEffect(() => {
     getAllApprovedVideos();
-  }, []);
+  }, [state]);
 
   return (
     <>

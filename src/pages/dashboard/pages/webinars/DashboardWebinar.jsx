@@ -15,7 +15,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Typography } from "@mui/material";
 import { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
-import axios from 'axios'
+import axios from "axios";
+import config from "../../../../ApiConfig/Config";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const WEBINARLIST = [
   {
@@ -194,6 +197,9 @@ const DashboardWebinar = ({ isAdmin }) => {
   const [duration, setDuration] = useState("");
   const [departmentName, setdepartment] = useState("");
   const [meetingTopic, setMeetingTopic] = useState("");
+  const [host, setHost] = useState("");
+  const [date, setDate] = useState("")
+  const { state } = useSelector((state) => state.vvgnli);
 
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
@@ -209,21 +215,31 @@ const DashboardWebinar = ({ isAdmin }) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const handleDateChange = (date, datestring) => {
+    console.log(date, datestring);
+    setDate(datestring)
+  };
   const handleCreateWebinar = () => {
     setIsModalVisible(false);
     console.log(agenda, duration, departmentName, meetingTopic);
 
-    const res = axios.post(`https://vvgnlisandboxapi.herokuapp.com/api/vvgnli/v1/admin/webinars/createNewWebinar`, {
-      agenda: agenda,
-      startTime: "2022-08-25T07:32:58Z",
-      adminUserId: userId,
-      duration: duration,
-      departmentName: departmentName,
-      meetingTopic: meetingTopic,
-      meetingType: 1,
-    },{
-      headers:{'User-Id':userId}
-    });
+    const res = axios.post(
+      config.server.path + config.role.admin + config.api.createNewWebinar,
+      {
+        agenda: agenda,
+        startTime: moment(date).format('yyyy-MM-DDThh:mm:ss[Z]'),
+        adminUserId: userId,
+        duration: duration,
+        departmentName: departmentName,
+        meetingTopic: meetingTopic,
+        meetingType: 1,
+        host: host,
+      },
+      {
+        headers: { "User-Id": userId, state: state },
+      }
+    );
   };
   const showModal = () => {
     setIsModalVisible(true);
@@ -314,7 +330,7 @@ const DashboardWebinar = ({ isAdmin }) => {
               <Space>
                 Agenda:{" "}
                 <Input
-                  placeholder="Enter Bike Name"
+                  placeholder="Enter Meeting Agenda"
                   onChange={(e) => setAgenda(e.target.value)}
                   value={agenda}
                 />
@@ -323,14 +339,14 @@ const DashboardWebinar = ({ isAdmin }) => {
               <br />
               <Space>
                 Date :
-                <DatePicker showTime />
+                <DatePicker showTime onChange={handleDateChange} />
               </Space>
               <br />
               <br />
               <Space>
                 Duration:{" "}
                 <Input
-                  placeholder="Enter Bike Color"
+                  placeholder="Enter Meeting Duration "
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                 />
@@ -338,9 +354,19 @@ const DashboardWebinar = ({ isAdmin }) => {
               <br />
               <br />
               <Space>
+                Host:{" "}
+                <Input
+                  placeholder="Enter Host Name"
+                  value={host}
+                  onChange={(e) => setHost(e.target.value)}
+                />
+              </Space>
+              <br />
+              <br />
+              <Space>
                 Department:{" "}
                 <Input
-                  placeholder="Enter Bike Location"
+                  placeholder="Enter Meeting Department"
                   value={departmentName}
                   onChange={(e) => setdepartment(e.target.value)}
                 />
@@ -350,7 +376,7 @@ const DashboardWebinar = ({ isAdmin }) => {
               <Space>
                 Meeting Topic:{" "}
                 <Input
-                  placeholder="Enter Bike Location"
+                  placeholder="Enter Meeting Topic"
                   value={meetingTopic}
                   onChange={(e) => setMeetingTopic(e.target.value)}
                 />
