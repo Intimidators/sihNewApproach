@@ -202,6 +202,8 @@ const DashboardWebinar = ({ isAdmin }) => {
   const { state } = useSelector((state) => state.vvgnli);
   const [loading, setLoading] = useState(false);
   const [futureWebinars, setFutureWebinars] = useState([]);
+  const [webinarRegistredUsers, setWebinarRegistredUsers] = useState([]);
+  const [isModalVisibleUser, setIsModalVisibleUser] = useState(false);
 
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
@@ -217,16 +219,19 @@ const DashboardWebinar = ({ isAdmin }) => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const handleCancelUser = () => {
+    setIsModalVisibleUser(false);
+  };
 
   const handleDateChange = (date, datestring) => {
     console.log(date, datestring);
     setDate(datestring);
   };
-  const handleCreateWebinar = () => {
+  const handleCreateWebinar = async () => {
     setIsModalVisible(false);
     console.log(agenda, duration, departmentName, meetingTopic);
 
-    const res = axios.post(
+    const res = await axios.post(
       config.server.path + config.role.admin + config.api.createNewWebinar,
       {
         agenda: agenda,
@@ -242,9 +247,13 @@ const DashboardWebinar = ({ isAdmin }) => {
         headers: { "User-Id": userId, state: state },
       }
     );
+    await getWebinarDetails();
   };
   const showModal = () => {
     setIsModalVisible(true);
+  };
+  const showModalUsers = () => {
+    setIsModalVisibleUser(true);
   };
 
   const getWebinarDetails = async () => {
@@ -262,6 +271,21 @@ const DashboardWebinar = ({ isAdmin }) => {
     } catch (error) {
       setLoading(false);
     }
+  };
+
+  const getRegisteredWebinarUsers = async (webinarId) => {
+    const res = await axios.get(
+      config.server.path +
+        config.role.admin +
+        config.api.getRegisteredUsers +
+        `?webinarId=${webinarId}`,
+      {
+        headers: { "User-Id": userId, state: state },
+      }
+    );
+    setWebinarRegistredUsers(res.data.registeredUsers);
+    showModalUsers();
+    console.log(res);
   };
 
   useEffect(() => {
@@ -287,9 +311,11 @@ const DashboardWebinar = ({ isAdmin }) => {
               <TableHead>
                 <TableRow>
                   <StyledTableCell>Webinar Name</StyledTableCell>
+                  <StyledTableCell>Media Id</StyledTableCell>
                   <StyledTableCell align="right">Department</StyledTableCell>
                   <StyledTableCell align="right">Date</StyledTableCell>
                   <StyledTableCell align="right">Host</StyledTableCell>
+                  <StyledTableCell align="right">Start Link</StyledTableCell>
                   <StyledTableCell align="right">Webinar Link</StyledTableCell>
                   <StyledTableCell align="right">Status</StyledTableCell>
                   {isAdmin && (
@@ -309,6 +335,9 @@ const DashboardWebinar = ({ isAdmin }) => {
                       <StyledTableCell component="th" scope="row">
                         {row.topic}
                       </StyledTableCell>
+                      <StyledTableCell component="th" scope="row">
+                        {row.webinarId}
+                      </StyledTableCell>
                       <StyledTableCell align="left">
                         {row.department}
                       </StyledTableCell>
@@ -319,14 +348,24 @@ const DashboardWebinar = ({ isAdmin }) => {
                       </StyledTableCell>
                       <StyledTableCell align="left">{row.host}</StyledTableCell>
                       <StyledTableCell align="left">
-                        <a href={row.webinarLink}>Webinar Link</a>
+                        <a href={row.startUrl}>Start Webinar Link</a>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        <a href={row.joinUrl}>Webinar Link</a>
                       </StyledTableCell>
                       <StyledTableCell align="left">
                         {row.status ? "Scheduled" : "Completed"}
                       </StyledTableCell>
                       {isAdmin && (
                         <StyledTableCell align="left">
-                          <a href={row.usersLink}>Users Link</a>
+                          <Button
+                            onClick={() => {
+                              getRegisteredWebinarUsers(row.webinarId);
+                              console.log(row.webinarId);
+                            }}
+                          >
+                            Users Link
+                          </Button>
                         </StyledTableCell>
                       )}
                       {isAdmin && (
@@ -410,6 +449,37 @@ const DashboardWebinar = ({ isAdmin }) => {
                 />
               </Space>
             </div>
+          </Modal>
+        </div>
+        <div className="image__card__community__modal">
+          <Modal
+            visible={isModalVisibleUser}
+            onOk={handleCancelUser}
+            onCancel={handleCancelUser}
+            style={{
+              height: "90vh",
+              position: "absolute",
+              top: "5vh",
+              left: "35%",
+            }}
+          >
+            <div style={{ marginTop: "90%" }}>
+              <div className="modal__images__comments">
+                {webinarRegistredUsers &&
+                  webinarRegistredUsers.map((comment) => (
+                    <div
+                      className="modal__images__comments__byUser"
+                      key={comment.mediaId}
+                    >
+                      User Id : {comment.userId}
+                      <br />
+                      Email : {comment.email}
+                      <br />
+                    </div>
+                  ))}
+              </div>
+            </div>
+            {/* </div> */}
           </Modal>
         </div>
       </div>

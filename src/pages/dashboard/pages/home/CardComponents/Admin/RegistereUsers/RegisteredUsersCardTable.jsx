@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import TableRow from "@mui/material/TableRow";
 import axios from "axios";
 import config from "../../../../../../../ApiConfig/Config";
+import {useSelector} from 'react-redux'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -33,6 +34,7 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
   const navigate = useNavigate();
 
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const {state} =useSelector((state)=>state.vvgnli)
   const userId = userRoleFromSession.userId;
 
   const handleClick = (event) => {
@@ -70,6 +72,8 @@ const RegisteredUsersCardTable = ({ user, getAllUsersBasicInfo }) => {
         `?userId=${userId}`,
       {
         ...obj,
+      },{
+        headers:{state:state}
       }
     );
     console.log(res);
