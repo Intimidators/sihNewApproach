@@ -76,7 +76,6 @@ const PortalsMenu = () => {
   const handleChange = (e) => {
     console.log(e.target.value);
     // setState(e.target.value);
-    debugger
     disptach({ type: "state", payload: e.target.value });
   };
   // useEffect(()=>{
@@ -265,7 +264,7 @@ const PortalsMenu = () => {
                   sx={{ color: "white" }}
                 >
                   <MenuItem value={"vvgnli"}>vvgnli</MenuItem>
-                  <MenuItem value={"Gujurat"}>Gujurat</MenuItem>
+                  <MenuItem value={"Gujrat"}>Gujurat</MenuItem>
                   <MenuItem value={"kerela"}>Kerela</MenuItem>
                   <MenuItem value={"Odisha"}>Odisha</MenuItem>
                 </Select>

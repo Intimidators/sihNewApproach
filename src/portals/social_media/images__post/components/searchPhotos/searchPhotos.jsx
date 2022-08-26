@@ -50,7 +50,7 @@ const SearchPhotos = ({ refresh, setRefresh }) => {
   useEffect(() => {
     getApprovedPhotos();
     console.log("use effect re", refresh);
-  }, [refresh]);
+  }, [state]);
 
   // console.log(loading);
   console.log(refresh);
