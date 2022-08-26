@@ -11,21 +11,32 @@ import moment from "moment";
 import axios from "axios";
 import config from "../../../../ApiConfig/Config";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const FutureWebinarCard = ({ webinar }) => {
   const userFromSession = JSON.parse(sessionStorage.getItem("user"));
   const { state } = useSelector((state) => state.vvgnli);
   const userId = userFromSession.userId;
+  const [loading, setLoading] = React.useState(false)
   const handleRegisterWebinarSubmit = async () => {
-    const res = await axios.post(
-      config.server.path + config.role.admin + config.api.registerParticipant,
-      {
-        webinarId: webinar.webinarId,
-        userId: userId,
-      },
-      { headers: { "User-Id": userId, state: state } }
-    );
-    console.log(res);
+    try {
+         const res = await axios.post(
+           config.server.path +
+             config.role.admin +
+             config.api.registerParticipant,
+           {
+             webinarId: webinar.webinarId,
+             userId: userId,
+           },
+           { headers: { "User-Id": userId, state: state } }
+         );
+      console.log(res);
+      toast.success('Registration successful')
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response.message)
+    }
+ 
   };
   return (
     <div className="webinar__card">
