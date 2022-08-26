@@ -5,10 +5,14 @@ import Typography from "@mui/material/Typography";
 import config from "../../../../../../../ApiConfig/Config";
 import "../Imagecard.css";
 import axios from "axios";
+import {useSelector} from 'react-redux'
+
 import { Button } from "antd";
 import moment from "moment";
 const RegisteredImageCard = ({ post, getApprovedPhotos }) => {
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+
   const userId = userRoleFromSession.userId;
   const handleDeletePost = async () => {
     try {
@@ -19,7 +23,7 @@ const RegisteredImageCard = ({ post, getApprovedPhotos }) => {
           `?userId=${userId}`,
         {
           mediaId: post.mediaId,
-        }
+        },{ headers: { state: state } }
       );
       await getApprovedPhotos();
       console.log(res);

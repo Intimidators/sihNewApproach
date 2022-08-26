@@ -8,8 +8,25 @@ import Typography from "@mui/material/Typography";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import moment from "moment";
+import axios from "axios";
+import config from "../../../../ApiConfig/Config";
+import { useSelector } from "react-redux";
 
 const FutureWebinarCard = ({ webinar }) => {
+  const userFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+  const userId = userFromSession.userId;
+  const handleRegisterWebinarSubmit = async () => {
+    const res = await axios.post(
+      config.server.path + config.role.admin + config.api.registerParticipant,
+      {
+        webinarId: webinar.webinarId,
+        userId: userId,
+      },
+      { headers: { "User-Id": userId, state: state } }
+    );
+    console.log(res);
+  };
   return (
     <div className="webinar__card">
       <div className="webinar__card__container">
@@ -28,7 +45,10 @@ const FutureWebinarCard = ({ webinar }) => {
                 Name : {webinar.topic} <br />
                 Dept : {webinar.department}
                 <br />
-                When : {moment(webinar.startTime).format('dddd DD MMMM yyyy hh:mm:ss A')}
+                When :{" "}
+                {moment(webinar.startTime).format(
+                  "dddd DD MMMM yyyy hh:mm:ss A"
+                )}
                 <br />
                 Host : {webinar.host}
               </Typography>
@@ -50,6 +70,7 @@ const FutureWebinarCard = ({ webinar }) => {
                     variant="contained"
                     color="primary"
                     startIcon={<PersonAddAltIcon />}
+                    onClick={handleRegisterWebinarSubmit}
                   >
                     Register Here
                   </Button>
@@ -62,5 +83,4 @@ const FutureWebinarCard = ({ webinar }) => {
     </div>
   );
 };
-
 export default FutureWebinarCard;

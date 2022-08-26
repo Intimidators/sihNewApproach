@@ -5,6 +5,7 @@ import "../uploadedImages.css";
 import { useParams } from "react-router-dom";
 import RegisteredImageCard from "./RegisteredImageCard";
 import AppWidgetSummary from "../../../AppWidgetSummary";
+import {useSelector} from 'react-redux'
 
 const RegisteredUserUploadedImages = () => {
   const [photos, setPhotos] = useState([]);
@@ -14,10 +15,12 @@ const RegisteredUserUploadedImages = () => {
     useState(0);
   const [regularTotalPendingPhotosCount, setRegularTotalPendingPhotosCount] =
     useState(0);
+    const { state } = useSelector((state) => state.vvgnli);
+
 
   const getUserPhotos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`,{ headers: { state: state } }
     );
     console.log(res);
     setRegularTotalPhotosCount(

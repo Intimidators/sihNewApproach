@@ -4,10 +4,13 @@ import AppWidgetSummary from "../../../AppWidgetSummary";
 import "../../../DashboardHome.css";
 import { useNavigate, useParams } from "react-router-dom";
 import config from "../../../../../../../ApiConfig/Config";
+import {useSelector} from 'react-redux'
+
 import axios from "axios";
 const RegisteredUserDetails = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const { state } = useSelector((state) => state.vvgnli);
 
   const [regularTotalPhotosCount, setRegularTotalPhotosCount] = useState(0);
   const [regularTotalVideosCount, setRegularTotalVideosCount] = useState(0);
@@ -15,7 +18,7 @@ const RegisteredUserDetails = () => {
   const [regularTotalResearchCount, setRegularTotalResearchCount] = useState(0);
   const getUserPhotos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getPhotosForUserId + `?userId=${userId}`,{ headers: { state: state } }
     );
     console.log(res);
     setRegularTotalPhotosCount(
@@ -26,7 +29,7 @@ const RegisteredUserDetails = () => {
 
   const getUserVideos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`,{ headers: { state: state } }
     );
     console.log(res);
     setRegularTotalVideosCount(
@@ -39,7 +42,7 @@ const RegisteredUserDetails = () => {
     const res = await axios.get(
       config.server.path +
         config.api.getResearchWorkForUserId +
-        `?userId=${userId}`
+        `?userId=${userId}`,{ headers: { state: state } }
     );
     console.log(res);
     setRegularTotalResearchCount(
