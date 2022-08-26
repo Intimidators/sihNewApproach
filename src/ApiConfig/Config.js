@@ -42,6 +42,8 @@ const config = {
     getLikedPost: "post/getLikedPost",
     updateProfile: "updateProfile",
     createNewWebinar: "webinars/createNewWebinar",
+    registerParticipant: "webinars/registerParticipant",
+    getRegisteredUsers: "webinars/getRegisteredUsers",
   },
 
   role: {

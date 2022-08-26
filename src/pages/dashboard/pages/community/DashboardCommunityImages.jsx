@@ -18,6 +18,7 @@ import { tableCellClasses } from "@mui/material/TableCell";
 import axios from "axios";
 import config from "../../../../ApiConfig/Config";
 import moment from "moment";
+import {useSelector} from 'react-redux'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,6 +47,8 @@ const DashboardCommunityImages = ({ isAdmin }) => {
   var isAdmin = false;
   var userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
   const userId = userRoleFromSession.userId;
+  const { state } = useSelector((state) => state.vvgnli);
+
   console.log(userRoleFromSession.role);
   if (userRoleFromSession.role === 1) {
     isAdmin = true;
@@ -57,7 +60,7 @@ const DashboardCommunityImages = ({ isAdmin }) => {
   const getPhotos = async () => {
     setLoading(true);
     const res = await axios.get(
-      config.server.path + config.api.getPendingPhotos + `?userId=${userId}`
+      config.server.path + config.api.getPendingPhotos + `?userId=${userId}`,{ headers: { state: state } }
     );
     setPhotos(res.data.pendingPhotos);
     console.log(res);
@@ -74,7 +77,8 @@ const DashboardCommunityImages = ({ isAdmin }) => {
       config.server.path + config.api.updatePostStatus + `?userId=${userId}`,
       {
         ...obj,
-      }
+      },
+      { headers: { state: state } }
     );
     await getPhotos()
   };
@@ -89,7 +93,8 @@ const DashboardCommunityImages = ({ isAdmin }) => {
       config.server.path + config.api.updatePostStatus + `?userId=${userId}`,
       {
         ...obj,
-      }
+      },
+      { headers: { state: state } }
     );
     await getPhotos()
   };

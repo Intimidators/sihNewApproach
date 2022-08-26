@@ -16,6 +16,8 @@ import { styled } from "@mui/material/styles";
 import axios from "axios";
 import config from "../../../../ApiConfig/Config";
 import moment from "moment";
+import {useSelector} from 'react-redux'
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,6 +37,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const DashboardResearch = () => {
   var userFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+
   const userId = userFromSession.userId;
 
   const [pendingResearchPapers, setPendingResearchPapers] = useState([]);
@@ -44,7 +48,7 @@ const DashboardResearch = () => {
       const res = await axios.get(
         config.server.path +
           config.api.getPendingResearchWork +
-          `?userId=${userId}`
+          `?userId=${userId}`,{ headers: { state: state } }
       );
       setPendingResearchPapers(res.data.pendingResearchWork);
       console.log("Research", res.data.pendingResearchWork);
@@ -66,7 +70,7 @@ const DashboardResearch = () => {
         {
           ...obj,
         },
-        { headers: { "User-Id": userId } }
+        { headers: { "User-Id": userId ,state:state} }
       );
       getPendingResearchPapers();
     } catch (error) {
@@ -86,7 +90,7 @@ const DashboardResearch = () => {
       {
         ...obj,
       },
-      { headers: { "User-Id": userId } }
+      { headers: { "User-Id": userId ,state:state} }
     );
     getPendingResearchPapers();
   };
