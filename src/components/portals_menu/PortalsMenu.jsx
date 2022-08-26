@@ -76,6 +76,7 @@ const PortalsMenu = () => {
   const handleChange = (e) => {
     console.log(e.target.value);
     // setState(e.target.value);
+    debugger
     disptach({ type: "state", payload: e.target.value });
   };
   // useEffect(()=>{

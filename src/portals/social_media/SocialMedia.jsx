@@ -7,8 +7,7 @@ import axios from "axios";
 import config from "../../ApiConfig/Config";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 const SocialMedia = () => {
   const toastId = useRef(null);
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -19,6 +18,9 @@ const SocialMedia = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { state } = useSelector((state) => state.vvgnli);
+
   const handleUpload = async () => {
     let formData = new FormData();
     formData.append("file", imgFile.data);
@@ -39,10 +41,13 @@ const SocialMedia = () => {
               });
             }
           },
-          headers: { "User-Id": user.userId },
+          headers: {
+            "User-Id": user.userId,
+            state: state,
+          },
         }
       );
-
+      console.log(res);
       toast.done(toastId.current);
       toast.update(toastId.current, {
         render: "Upload Done",
@@ -56,7 +61,7 @@ const SocialMedia = () => {
           mediaIdArray: res.data.mediaIdArray,
         },
         {
-          headers: { "User-Id": user.userId },
+          headers: { "User-Id": user.userId, state: state },
         }
       );
 

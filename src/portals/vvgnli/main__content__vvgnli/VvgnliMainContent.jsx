@@ -32,7 +32,8 @@ const VvgnliMainContent = () => {
                   {myGlobalDataVvgnliMainContent.vvgnli_main_menu_state === 'people'?<People />:''}
                   {myGlobalDataVvgnliMainContent.vvgnli_main_menu_state === 'online_training'?<OnlineTraining />:''}
                   {myGlobalDataVvgnliMainContent.vvgnli_main_menu_state === 'e_resources'?<EResources />:''}
-                  {myGlobalDataVvgnliMainContent.vvgnli_main_menu_state === 'mou'?<Mou />:''}
+          {myGlobalDataVvgnliMainContent.vvgnli_main_menu_state === 'mou' ? <Mou /> : ''}
+          
                 </div>
             </div>
         </>
