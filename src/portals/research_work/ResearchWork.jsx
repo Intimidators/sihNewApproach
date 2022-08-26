@@ -76,11 +76,11 @@ const ResearchWork = () => {
       console.log(res);
 
       toast.done(toastId.current);
-      toast.update(toastId.current, {
-        render: "Upload Done",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 5000,
-      });
+      // toast.update(toastId.current, {
+      //   render: "Upload Done",
+      //   type: toast.TYPE.SUCCESS,
+      //   autoClose: 5000,
+      // });
       // console.log("res", res);
       // setApprovedResearchWork(res.data.mediaIdArray);
       const res2 = await axios.post(
@@ -92,6 +92,12 @@ const ResearchWork = () => {
         { headers: { "User-Id": user.userId, state: state } }
       );
       // console.log("res2", res2);
+       if (user.role === 2) {
+         toast.success("Media has been send for approval");
+       }
+       if (user.role === 1) {
+         toast.success("Media has been uploaded");
+       }
       setRefresh(true);
     } catch (error) {
       console.log(error);
