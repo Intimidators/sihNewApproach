@@ -165,7 +165,7 @@ const ImageCardCommunity = ({ image, getApprovedPhotos }) => {
               }}
             />
           </div>
-          <div style={{ marginTop: "90%" }}>
+          <div style={{ marginTop: "35rem" }}>
             <div className="modal__image__detail__count">
               <Space>
                 <Text>{image.totalLikeCount} Likes</Text>
