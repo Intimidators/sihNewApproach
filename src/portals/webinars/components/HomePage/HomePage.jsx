@@ -181,7 +181,17 @@ const HomePage = () => {
   return (
     <div className="webinar__home__page">
       {loading ? (
-        <CircularProgress />
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <CircularProgress style={{ color: "white" }} />
+        </div>
       ) : (
         <div className="webinar__home__page__container">
           <div className="webinar__sections">
