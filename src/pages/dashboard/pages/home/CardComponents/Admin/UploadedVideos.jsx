@@ -5,13 +5,19 @@ import { Typography, Button } from "@mui/material";
 import axios from "axios";
 import config from "../../../../../../ApiConfig/Config";
 import VideoCard from "./VideoCard";
+import { useSelector } from "react-redux";
 
 const UploadedVideos = () => {
+  const { state } = useSelector((state) => state.vvgnli);
+
   const [videos, setVideos] = useState([]);
 
   const getApprovedVideos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getApprovedVideos
+      config.server.path + config.api.getApprovedVideos,
+      {
+        headers: { state: state },
+      }
     );
     setVideos(res.data.approvedVideosArray);
     console.log(res);

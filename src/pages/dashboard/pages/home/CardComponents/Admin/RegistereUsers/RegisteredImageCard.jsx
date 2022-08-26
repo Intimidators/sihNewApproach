@@ -50,13 +50,13 @@ const RegisteredImageCard = ({ post, getApprovedPhotos }) => {
               Comment : {post.totalCommentCount} <br />
             </Typography>
             <div className="post__card__delete__button">
-              {post.status === 1 ? (
+              {/* {post.status === 1 ? (
                 <Button onClick={handleDeletePost} type="danger">
                   Delete Post
                 </Button>
               ) : (
                 <Button>Pending For Approval</Button>
-              )}
+              )} */}
             </div>
           </CardContent>
         </div>

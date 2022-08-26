@@ -112,7 +112,7 @@ const RegisteredUserDetails = () => {
                   style={{ cursor: "pointer" }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={3}>
+              {/* <Grid item xs={12} sm={6} md={3}>
                 <AppWidgetSummary
                   title="Registered Webinar"
                   total={1352831}
@@ -140,7 +140,7 @@ const RegisteredUserDetails = () => {
                   }
                   style={{ cursor: "pointer" }}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
           </div>
         </div>

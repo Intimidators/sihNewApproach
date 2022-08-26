@@ -69,3 +69,7 @@ code {
 }
 /* app.jsx css ends */
 
+.feedback__form{
+  background-color: #fff;
+  height: 80vh;
+}

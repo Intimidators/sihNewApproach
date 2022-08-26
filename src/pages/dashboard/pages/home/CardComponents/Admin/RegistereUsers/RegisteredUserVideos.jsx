@@ -6,10 +6,13 @@ import AppWidgetSummary from "../../../AppWidgetSummary";
 import { useParams } from "react-router-dom";
 import config from "../../../../../../../ApiConfig/Config";
 import RegisteredVideoCard from "./RegisterdVideoCard";
+import {useSelector} from 'react-redux'
 
 
 const RegisteredUserUploadedVideos = () => {
   const [videos, setVideos] = useState([]);
+  const {state}=useSelector((state)=>state.vvgnli)
+
   const { userId } = useParams();
   const [regularTotalVideosCount, setRegularTotalVideosCount] = useState(0);
   const [regularTotalApprovedVideosCount, setRegularTotalApprovedVideosCount] =
@@ -18,7 +21,7 @@ const RegisteredUserUploadedVideos = () => {
     useState(0);
   const getUserVideos = async () => {
     const res = await axios.get(
-      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`
+      config.server.path + config.api.getVideosForUserId + `?userId=${userId}`,{state:state}
     );
     setRegularTotalVideosCount(
       res.data.countOfApprovedAndPendingMedia.countOfApprovedMedia +

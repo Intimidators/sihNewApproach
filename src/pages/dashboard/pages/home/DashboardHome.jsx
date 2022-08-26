@@ -297,36 +297,8 @@ const DashboardHome = ({}) => {
                     </div>
                   </div>
 
-                  <div className="dashboard__card wrapper">
-                    <div className="card">
-                      <AppWidgetSummary
-                        title="Past Webinars"
-                        total={pastWebinarCount}
-                        icon={"ant-design:android-filled"}
-                        onClick={() =>
-                          navigate("/dashboard/home/webinarTillNow")
-                        }
-                        className="dashboard__card__inner__div"
-                        style={{ cursor: "pointer", fontSize: ".5rem" }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="dashboard__card wrapper">
-                    <div className="card">
-                      <AppWidgetSummary
-                        title="Active Webinar"
-                        total={onGoingWebinarCount}
-                        color="info"
-                        icon={"ant-design:apple-filled"}
-                        onClick={() =>
-                          navigate("/dashboard/home/activeWebinars")
-                        }
-                        className="dashboard__card__inner__div"
-                        style={{ cursor: "pointer", fontSize: ".5rem" }}
-                      />
-                    </div>
-                  </div>
+                 
+                 
 
                   <div className="dashboard__card wrapper">
                     <div className="card">
@@ -394,31 +366,7 @@ const DashboardHome = ({}) => {
                         style={{ cursor: "pointer" }}
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                      <AppWidgetSummary
-                        title="Registerd Webinar"
-                        total={1352831}
-                        color="info"
-                        icon={"ant-design:apple-filled"}
-                        onClick={() =>
-                          navigate("/dashboard/home/registeredWebinarsRegular")
-                        }
-                        style={{ cursor: "pointer" }}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} sm={6} md={3}>
-                      <AppWidgetSummary
-                        title="Webinars Attended"
-                        total={1723315}
-                        color="warning"
-                        icon={"ant-design:windows-filled"}
-                        onClick={() =>
-                          navigate("/dashboard/home/webinarsAttendedRegular")
-                        }
-                        style={{ cursor: "pointer" }}
-                      />
-                    </Grid>
+                  
                   </Grid>
                 </div>
               </div>

@@ -44,6 +44,7 @@ import PasswordReset from "./pages/PasswordReset";
 import ProtectedRoutes from "./Auth/Auth";
 import ErrorPage from "./pages/404page";
 import WebinarShowPage from "./pages/webinarShowPage/webinarShowPage";
+import FeedbackForm from "./components/FeedbackForm/FeedBackForm";
 export let gData = createContext();
 
 const App = () => {
@@ -187,6 +188,10 @@ const App = () => {
                   element={<ScheduledWebinars />}
                 />
               </Route>
+                <Route
+                  path="feedbackform"
+                  element={<FeedbackForm />}
+                />
             </Routes>
           </gData.Provider>
         </div>

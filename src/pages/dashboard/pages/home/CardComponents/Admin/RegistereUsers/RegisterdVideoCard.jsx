@@ -49,7 +49,7 @@ const RegisteredVideoCard = ({ post, setVideos }) => {
               Likes : {post.totalLikeCount} <br />
               Comment : {post.totalCommentCount} <br />
             </Typography>
-            <div className="post__card__delete__button">
+            {/* <div className="post__card__delete__button">
               {post.status === 1 ? (
                 <Button onClick={handleDeletePost} type="danger">
                   Delete Post
@@ -57,7 +57,7 @@ const RegisteredVideoCard = ({ post, setVideos }) => {
               ) : (
                 <Button>Pending For Approval</Button>
               )}
-            </div>
+            </div> */}
           </CardContent>
         </div>
       </div>

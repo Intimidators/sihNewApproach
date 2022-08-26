@@ -13,6 +13,7 @@ import { Button } from "@material-ui/core";
 import axios from "axios";
 import config from "../../../../../../ApiConfig/Config";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,13 +34,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const UploadedResearchWork = () => {
   const [approvedResearchPapers, setApprovedResearchPapers] = useState([]);
   const userRoleFromSession = JSON.parse(sessionStorage.getItem("user"));
+  const { state } = useSelector((state) => state.vvgnli);
+
   const userId = userRoleFromSession.userId;
   const getApprovedResearchPapers = async () => {
     try {
       const res = await axios.get(
         config.server.path +
           config.api.getApprovedResearchWork +
-          `?userId=${userId}`
+          `?userId=${userId}`,
+        {
+          headers: { state: state },
+        }
       );
       setApprovedResearchPapers(res.data.approvedResearchWork);
       console.log(" Approved Research Paperd", res.data);
